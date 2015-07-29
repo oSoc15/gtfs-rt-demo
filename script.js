@@ -7,6 +7,7 @@ var GtfsRealtimeBindings = require('gtfs-realtime-bindings');
 var request = require('request');
 var express = require('express');
 var app = express();
+app.use('/', express.static('public'));
 
 var requestSettingsTripUpdates = {
     method: 'GET',
@@ -18,27 +19,6 @@ var requestSettingsServiceAlerts = {
     url: 'http://irail.gent/service_alerts.pb',
     encoding: null
 };
-/*
-request(requestSettingsTripUpdates, function (error, response, body) {
-
-    if (!error && response.statusCode == 200) {
-
-        var feed = GtfsRealtimeBindings.FeedMessage.decode(body);
-        console.log(feed);
-        console.log(feed.entity[0]);
-        feed.entity.forEach(function(entity) {
-            console.log("Lolsnor");
-            console.log(entity);
-            if (entity.trip_update) {
-                console.log(entity.trip_update);
-            }
-        });
-    }
-});
-*/
-
-
-
 
 app.get('/servicesAlerts', function (req, res) {
 

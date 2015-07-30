@@ -8,6 +8,7 @@ var request = require('request');
 var express = require('express');
 var app = express();
 app.use('/', express.static('public'));
+fs = require('fs');
 
 var requestSettingsTripUpdates = {
     method: 'GET',
@@ -19,6 +20,39 @@ var requestSettingsServiceAlerts = {
     url: 'http://irail.gent/service_alerts.pb',
     encoding: null
 };
+
+request(requestSettingsServiceAlerts, function (error, response, body) {
+
+    if (!error && response.statusCode == 200) {
+
+        var feed = GtfsRealtimeBindings.FeedMessage.decode(body);
+
+        fs.writeFile('service_alerts.json', JSON.stringify(feed), function (err) {
+            if (err) return console.log(err);
+            //console.log('Hello World > helloworld.txt');
+        });
+        //console.log(feed.entity[0]);
+
+    }
+});
+request(requestSettingsTripUpdates, function (error, response, body) {
+
+    if (!error && response.statusCode == 200) {
+
+        var feed = GtfsRealtimeBindings.FeedMessage.decode(body);
+
+        fs.writeFile('trip_updates.json', JSON.stringify(feed), function (err) {
+            if (err) return console.log(err);
+            //console.log('Hello World > helloworld.txt');
+        });
+        //console.log(feed.entity[0]);
+
+    }
+});
+
+
+
+
 
 app.get('/servicesAlerts', function (req, res) {
 

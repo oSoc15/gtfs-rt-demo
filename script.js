@@ -27,7 +27,7 @@ request(requestSettingsServiceAlerts, function (error, response, body) {
 
         var feed = GtfsRealtimeBindings.FeedMessage.decode(body);
 
-        fs.writeFile('service_alerts.json', JSON.stringify(feed), function (err) {
+        fs.writeFile('public/service_alerts.json', JSON.stringify(feed), function (err) {
             if (err) return console.log(err);
             //console.log('Hello World > helloworld.txt');
         });
@@ -41,7 +41,7 @@ request(requestSettingsTripUpdates, function (error, response, body) {
 
         var feed = GtfsRealtimeBindings.FeedMessage.decode(body);
 
-        fs.writeFile('trip_updates.json', JSON.stringify(feed), function (err) {
+        fs.writeFile('public/trip_updates.json', JSON.stringify(feed), function (err) {
             if (err) return console.log(err);
             //console.log('Hello World > helloworld.txt');
         });
@@ -49,24 +49,30 @@ request(requestSettingsTripUpdates, function (error, response, body) {
 
     }
 });
+var minutes = 1, the_interval = minutes * 60 * 1000;
+setInterval(function() {
+    console.log("I am doing my 1 minutes check");
+    // do your stuff here
+}, the_interval);
 
 
 
 
 
 app.get('/servicesAlerts', function (req, res) {
+    console.log("Got Service Alerts Request");
 
     request(requestSettingsServiceAlerts, function (error, response, body) {
 
         if (!error && response.statusCode == 200) {
 
             var feed = GtfsRealtimeBindings.FeedMessage.decode(body);
-
+            res.write(JSON.stringify(feed));
 
             //console.log(feed.entity[0]);
             feed.entity.forEach(function(entity) {
-                 res.write(JSON.stringify(entity));
-                console.log(entity.alert.header_text.translation[0]);
+               // res.write(JSON.stringify(entity));
+              //  console.log(entity.alert.header_text.translation[0]);
 
             });
         }
@@ -74,6 +80,7 @@ app.get('/servicesAlerts', function (req, res) {
 });
 
 app.get('/tripUpdates', function (req, res) {
+    console.log("Got Trip Updates Request");
 
     request(requestSettingsTripUpdates, function (error, response, body) {
 

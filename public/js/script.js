@@ -16,6 +16,7 @@ console.log('Hi there');
         console.log(result.header);
         parseTripUpdateData(result);
     }});
+
     setInterval(function() {
         console.log('Hi Minute');
 

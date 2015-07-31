@@ -17,7 +17,7 @@ console.log('Hi there');
         parseTripUpdateData(result);
     }});
 
-    setInterval(function() {
+    window.setInterval(function() {
         console.log('Hi Minute');
 
         $.ajax({url: "http://localhost:3000/service_alerts.json", success: function(result){
@@ -38,7 +38,7 @@ console.log('Hi there');
 
 
         for( i = 0 ;i <= result.entity.length; i++){
-            console.log(result.entity[i].alert.header_text.translation[0].text);
+            //console.log(result.entity[i].alert.header_text.translation[0].text);
 
 
             $(".servicesUpdate").append(" <tr>"+
@@ -76,7 +76,7 @@ console.log('Hi there');
 
             var routeId = result.entity[i].trip_update.trip.route_id;
             var routeLabel = result.entity[i].trip_update.vehicle.label;
-            console.log(routeLabel);
+            //console.log(routeLabel);
             var reslt = routeId.split(":");
 
             var totalDelay=0;

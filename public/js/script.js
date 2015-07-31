@@ -16,13 +16,28 @@ console.log('Hi there');
         console.log(result.header);
         parseTripUpdateData(result);
     }});
+    setInterval(function() {
+        console.log('Hi Minute');
+
+        $.ajax({url: "http://localhost:3000/service_alerts.json", success: function(result){
+            parseServiceAlertData(result);
+        }});
+        $.ajax({url: "http://localhost:3000/trip_updates.json", success: function(result){
+            parseTripUpdateData(result);
+        }});
+
+
+
+    }, 1000 * 60 * 1); // where X is your every X minutes
 
     function parseServiceAlertData(result){
 
+        $( ".servicesUpdate" ).html("");
+        console.log('Refresh Service Update');
 
-        console.log(result.entity.length);
+
         for( i = 0 ;i <= result.entity.length; i++){
-
+            console.log(result.entity[i].alert.header_text.translation[0].text);
 
             $(".servicesUpdate").append(" <tr>"+
                 "<td>"+
@@ -41,19 +56,19 @@ console.log('Hi there');
         }
     }
     function parseTripUpdateData(result){
-        console.log("Miaauw i am a trip");
 
-        console.log(result.entity.length);
+
+
         var totalAmountofTrainsHavingIssues = result.entity.length;
         var totalTrains = 2986;
         var percentageOfDelays = (totalAmountofTrainsHavingIssues / totalTrains ) *100 ;
         percentageOfDelays =  percentageOfDelays.toFixed(2);
 
+        $( ".extraInfo").html("");
 
-
-        $( ".extraInfo" ).append("Number of Trains having issues "+ totalAmountofTrainsHavingIssues );
+        $( ".extraInfo" ).append('<h2>Number of Trains having issues <span class="btn-danger">  '+ totalAmountofTrainsHavingIssues + "  </span></h2>" );
         $( ".extraInfo" ).append(" <h2>Percentage of delays " +percentageOfDelays+"%</h2>");
-
+        $( ".tripupdates" ).html("");
 
 
         for( i = 0 ;i <= result.entity.length; i++){
@@ -61,37 +76,21 @@ console.log('Hi there');
 
             var routeId = result.entity[i].trip_update.trip.route_id;
             var reslt = routeId.split(":");
-            console.log(reslt[1]);
+
             var totalDelay=0;
-
-
-
             try {
                   for( t = 0 ;t <= result.entity[i].trip_update.stop_time_update.length; t++){
                  totalDelay += result.entity[i].trip_update.stop_time_update[t].arrival.delay;
 
-
-                    console.log(totalDelay);
-
-
-
-
                   }
-
-
-
-
-
             }catch (err){
 
             }
-
             totalDelay = totalDelay/60;
             totalDelay = Math.round(totalDelay *100) /100;
             if(totalDelay ==0){
                 totalDelay ="Cancelled"
             }
-
 
             $( ".tripupdates" ).append( " <tr>"+
                 "<td>"+
@@ -100,14 +99,7 @@ console.log('Hi there');
                 "<td>"+
                totalDelay+
                 "</td>"+
-
-
-
-
                 "</tr>");
-
-
-
            // console.log(" i am an awesome cat "  + result.entity[i].alert.header_text.translation[0].text);
 
 

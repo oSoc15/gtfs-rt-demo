@@ -12,11 +12,13 @@ fs = require('fs');
 
 var requestSettingsTripUpdates = {
     method: 'GET',
+    //url: 'http://localhost:8000/trip_updates.pb',
     url: 'http://irail.gent/trip_updates.pb',
     encoding: null
 };
 var requestSettingsServiceAlerts = {
     method: 'GET',
+    //url: 'http://localhost:8000/service_alerts.pb',
     url: 'http://irail.gent/service_alerts.pb',
     encoding: null
 };
@@ -29,9 +31,9 @@ request(requestSettingsServiceAlerts, function (error, response, body) {
 
         fs.writeFile('public/service_alerts.json', JSON.stringify(feed), function (err) {
             if (err) return console.log(err);
-            //console.log('Hello World > helloworld.txt');
+
         });
-        //console.log(feed.entity[0]);
+
 
     }
 });
@@ -51,8 +53,41 @@ request(requestSettingsTripUpdates, function (error, response, body) {
 });
 var minutes = 1, the_interval = minutes * 60 * 1000;
 setInterval(function() {
-    console.log("I am doing my 1 minutes check");
-    // do your stuff here
+    console.log("I am doing my minute check");
+
+    request(requestSettingsTripUpdates, function (error, response, body) {
+
+        if (!error && response.statusCode == 200) {
+
+            var feed = GtfsRealtimeBindings.FeedMessage.decode(body);
+
+            fs.writeFile('public/trip_updates.json', JSON.stringify(feed), function (err) {
+                if (err) return console.log(err);
+                //console.log('Hello World > helloworld.txt');
+            });
+            //console.log(feed.entity[0]);
+
+        }else{console.log('Error trying to get tripupdates');}
+
+    });
+
+    request(requestSettingsServiceAlerts, function (error, response, body) {
+
+        if (!error && response.statusCode == 200) {
+
+            var feed = GtfsRealtimeBindings.FeedMessage.decode(body);
+
+            fs.writeFile('public/service_alerts.json', JSON.stringify(feed), function (err) {
+                if (err) return console.log(err);
+                //console.log('Hello World > helloworld.txt');
+            });
+            //console.log(feed.entity[0]);
+
+        }
+    });
+
+
+
 }, the_interval);
 
 

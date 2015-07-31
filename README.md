@@ -1,4 +1,9 @@
 # gtfs-rt-demo
 
+Show the real-time data of the Belgian railway company in a simple overview
+
 ## install
-npm install express fs gtfs-realtime-bindings protocol-buffers request
+
+```bash
+npm install
+```

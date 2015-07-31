@@ -1,0 +1,31 @@
+{
+  "name": "irail-analytics",
+  "version": "0.0.1",
+  "description": "Analytics of the Belgian railway system by checking a gtfs-rt",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oSoc15/gtfs-rt-demo.git"
+  },
+  "keywords": [
+    "gtfs",
+    "open",
+    "data",
+    "gtfs-rt"
+  ],
+  "author": "Tim Tijssens",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oSoc15/gtfs-rt-demo/issues"
+  },
+  "dependencies": {
+    "express": "^4.13.1",
+    "fs": "0.0.2",
+    "gtfs-realtime-bindings": "0.0.4",
+    "protocol-buffers": "^3.1.2",
+    "request": "^2.60.0"
+  }
+}

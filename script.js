@@ -82,9 +82,6 @@ setInterval(function() {
           
         }
     });
-
-
-
 }, the_interval);
 
 app.get('/servicesAlerts', function (req, res) {

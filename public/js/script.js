@@ -17,7 +17,7 @@ console.log('Hi there');
         parseTripUpdateData(result);
     }});
 
-    setInterval(function() {
+    window.setInterval(function() {
         console.log('Hi Minute');
 
         $.ajax({url: "/service_alerts.json", success: function(result){
@@ -38,7 +38,8 @@ console.log('Hi there');
 
 
         for( i = 0 ;i <= result.entity.length; i++){
-            console.log(result.entity[i].alert.header_text.translation[0].text);
+            //console.log(result.entity[i].alert.header_text.translation[0].text);
+
 
             $(".servicesUpdate").append(" <tr>"+
                 "<td>"+
@@ -57,9 +58,6 @@ console.log('Hi there');
         }
     }
     function parseTripUpdateData(result){
-
-
-
         var totalAmountofTrainsHavingIssues = result.entity.length;
         var totalTrains = 2986;
         var percentageOfDelays = (totalAmountofTrainsHavingIssues / totalTrains ) *100 ;
@@ -75,11 +73,17 @@ console.log('Hi there');
         for( i = 0 ;i <= result.entity.length; i++){
 
 
+
             var routeId = result.entity[i].trip_update.trip.route_id;
+            var routeLabel = result.entity[i].trip_update.vehicle.label;
+            //console.log(routeLabel);
             var reslt = routeId.split(":");
 
             var totalDelay=0;
             try {
+
+
+
                   for( t = 0 ;t <= result.entity[i].trip_update.stop_time_update.length; t++){
                  totalDelay += result.entity[i].trip_update.stop_time_update[t].arrival.delay;
 
@@ -98,10 +102,12 @@ console.log('Hi there');
                 reslt[1]+
                 "</td>"+
                 "<td>"+
+                routeLabel+
+                "</td>"+
+                "<td>"+
                totalDelay+
                 "</td>"+
                 "</tr>");
-           // console.log(" i am an awesome cat "  + result.entity[i].alert.header_text.translation[0].text);
         }
     }
 });

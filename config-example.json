@@ -1,0 +1,7 @@
+{
+  "port" : "3000",
+  "gtfs-urls" : {
+    "service-alerts" : "http://irail.gent/service_alerts.pb",
+    "trip-updates" : "http://irail.gent/trip_updates.pb"
+  }
+}

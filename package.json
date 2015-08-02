@@ -22,8 +22,8 @@
     "url": "https://github.com/oSoc15/gtfs-rt-demo/issues"
   },
   "dependencies": {
+    "cors": "^2.7.1",
     "express": "^4.13.1",
-    "fs": "0.0.2",
     "gtfs-realtime-bindings": "0.0.4",
     "protocol-buffers": "^3.1.2",
     "request": "^2.60.0"

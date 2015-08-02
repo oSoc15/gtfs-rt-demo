@@ -6,12 +6,12 @@
 $(document).ready(function(){
 console.log('Hi there');
 
-    $.ajax({url: "http://localhost:3000/service_alerts.json", success: function(result){
+    $.ajax({url: "/service_alerts.json", success: function(result){
         console.log('Hi data');
        console.log(result.header);
        parseServiceAlertData(result);
     }});
-    $.ajax({url: "http://localhost:3000/trip_updates.json", success: function(result){
+    $.ajax({url: "/trip_updates.json", success: function(result){
         console.log('Hi data');
         console.log(result.header);
         parseTripUpdateData(result);
@@ -20,10 +20,10 @@ console.log('Hi there');
     setInterval(function() {
         console.log('Hi Minute');
 
-        $.ajax({url: "http://localhost:3000/service_alerts.json", success: function(result){
+        $.ajax({url: "/service_alerts.json", success: function(result){
             parseServiceAlertData(result);
         }});
-        $.ajax({url: "http://localhost:3000/trip_updates.json", success: function(result){
+        $.ajax({url: "/trip_updates.json", success: function(result){
             parseTripUpdateData(result);
         }});
 
@@ -102,8 +102,6 @@ console.log('Hi there');
                 "</td>"+
                 "</tr>");
            // console.log(" i am an awesome cat "  + result.entity[i].alert.header_text.translation[0].text);
-
-
         }
     }
 });

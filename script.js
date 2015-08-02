@@ -1,25 +1,26 @@
-/**
- * Created by timtijssens on 29/07/15.
- */
+var GtfsRealtimeBindings = require('gtfs-realtime-bindings'),
+    request = require('request'),
+    express = require('express'),
+    cors = require('cors'),
+    fs = require('fs');
 
-
-var GtfsRealtimeBindings = require('gtfs-realtime-bindings');
-var request = require('request');
-var express = require('express');
 var app = express();
 app.use('/', express.static('public'));
-fs = require('fs');
+app.use('/service_alerts.json',cors());
+app.use('/trip_updates.json',cors());
+
+var config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
 var requestSettingsTripUpdates = {
     method: 'GET',
     //url: 'http://localhost:8000/trip_updates.pb',
-    url: 'http://irail.gent/trip_updates.pb',
+    url: config['gtfs-urls']['trip-updates'],
     encoding: null
 };
 var requestSettingsServiceAlerts = {
     method: 'GET',
     //url: 'http://localhost:8000/service_alerts.pb',
-    url: 'http://irail.gent/service_alerts.pb',
+    url: config['gtfs-urls']['service-alerts'],
     encoding: null
 };
 
@@ -31,26 +32,21 @@ request(requestSettingsServiceAlerts, function (error, response, body) {
 
         fs.writeFile('public/service_alerts.json', JSON.stringify(feed), function (err) {
             if (err) return console.log(err);
-
         });
-
-
     }
 });
+
 request(requestSettingsTripUpdates, function (error, response, body) {
-
     if (!error && response.statusCode == 200) {
-
         var feed = GtfsRealtimeBindings.FeedMessage.decode(body);
-
         fs.writeFile('public/trip_updates.json', JSON.stringify(feed), function (err) {
             if (err) return console.log(err);
             //console.log('Hello World > helloworld.txt');
         });
         //console.log(feed.entity[0]);
-
     }
 });
+
 var minutes = 1, the_interval = minutes * 60 * 1000;
 setInterval(function() {
     console.log("I am doing my minute check");
@@ -83,7 +79,7 @@ setInterval(function() {
                 //console.log('Hello World > helloworld.txt');
             });
             //console.log(feed.entity[0]);
-
+          
         }
     });
 
@@ -134,7 +130,7 @@ app.get('/tripUpdates', function (req, res) {
     });
 });
 
-var server = app.listen(3000, function () {
+var server = app.listen(config.port, function () {
     var host = server.address().address;
     var port = server.address().port;
 
